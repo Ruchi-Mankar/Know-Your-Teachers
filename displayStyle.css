@@ -1,0 +1,49 @@
+body{
+    background-image: linear-gradient(to right, rgba(255,0,0,0), rgb(215, 220, 237), rgba(255,0,0,0));
+}
+
+header{
+    /* background: rgb(24, 2, 37); */
+    text-align: center;
+    /* color: rgb(23, 65, 218); */
+    /* color: #d43f8d; */
+}
+h1{
+    text-align: center;
+}
+.container{
+    color: rgb(10, 11, 11);
+}
+
+table th {
+    padding: 10px 15px; 
+  }
+table td{
+    padding-left: 15px;
+}
+footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn,.btn2, #exportToCSV{
+    background: black;
+    color: beige;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* .btn2{
+    background: black;
+    color: beige;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+} */
+.chartClass{
+    border-color: #280032;
+    width: 400px;
+    height: 400px;
+}

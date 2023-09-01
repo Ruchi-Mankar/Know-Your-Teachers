@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher's Review</title>
+    <script src="html2pdf.bundle.min.js"></script>
+    <script src="html2pdf.bundle.min.js.map"></script>
+    <script src="html2pdf.bundle.js"></script>
+    <script src="html2pdf.js"></script>
+    <script src="html2pdf.min.js"></script>
+    <script src="html2pdf.min.js.map"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src= "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="displayStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <!-- <button id="exportToCSV">Export to Excel/CSV</button> -->
+    <header><h1>Teacher's Review by your Seniors</h1></header>
+    <div class="container">
+      <!-- <button id="clearDataButton">Clear Captured Data</button> -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Teacher's Name</th>
+                    <th>Teacher's Subject</th>
+                    <th>Year Taught</th>
+                    <th>Subject Type</th>
+                    <th>Provided Extra Resources</th>
+                    <th>Flexibility with Due Dates</th>
+                    <th>Type of Paper Set</th>
+                    <th>Other Information</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+                <!-- Table rows will be added dynamically using JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <footer>
+      <button class = "btn" id="btn" onclick="generatePDF()"><strong>Click here to generate a pdf via html2pdf</strong></button>
+      <button class = "btn" id="btn-pupet" onclick="generateAPDF()"><strong>Click here to generate a pdf via Puppeteer</strong></button>
+      <button class = "btn2" id="btn2" onclick="convertHTMLtoPDF()"><strong>Click here to generate a pdf via jsPDF</strong></button>
+      <button id="exportToCSV"><strong>Export  to CSV</strong></button>
+    </footer>
+    <br>
+    <p></p>
+    <br>
+    <div class = "chartClass">
+      <canvas id="teacherPieChart"></canvas>
+  </div>
+    <script>
+      const capturedDataJSON = localStorage.getItem('capturedData');
+      const capturedData = capturedDataJSON ? JSON.parse(capturedDataJSON) : [];
+  
+      // Select the table body to populate data
+      const dataTableBody = document.getElementById('data-table-body');
+  
+      // Function to create and append a table row
+      function createTableRow(data) {
+          const row = document.createElement('tr');
+          const nameCell = document.createElement('td');
+          const subjectCell = document.createElement('td');
+          const yearCell = document.createElement('td');
+          const typeCell = document.createElement('td');
+          const resourceCell = document.createElement('td');
+          const flexibilityCell = document.createElement('td');
+          const paperCell = document.createElement('td');
+          const otherCell = document.createElement('td');
+  
+          // Set text content for each cell
+          nameCell.textContent = data.teacherName;
+          subjectCell.textContent = data.teacherSubject;
+          yearCell.textContent = data.yearTaught;
+          typeCell.textContent = data.subjectType;
+          resourceCell.textContent = data.resourcesProvided;
+          flexibilityCell.textContent = data.dateFlexibility;
+          paperCell.textContent = data.paperType;
+          otherCell.textContent = data.otherInfo;
+  
+          // Append cells to the row
+          row.appendChild(nameCell);
+          row.appendChild(subjectCell);
+          row.appendChild(yearCell);
+          row.appendChild(typeCell);
+          row.appendChild(resourceCell);
+          row.appendChild(flexibilityCell);
+          row.appendChild(paperCell);
+          row.appendChild(otherCell);
+  
+          return row;
+      }
+  
+      capturedData.sort((a, b) => {
+          return a.teacherName.localeCompare(b.teacherName);
+      });
+  
+      // Populate the table with captured data
+      if (capturedData && capturedData.length > 0) {
+          capturedData.forEach(data => {
+              const newRow = createTableRow(data);
+              dataTableBody.appendChild(newRow);
+          });
+      } else {
+          const emptyRow = document.createElement('tr');
+          const emptyCell = document.createElement('td');
+          emptyCell.colSpan = 8; // Set the colspan to the number of table headers
+          emptyCell.textContent = 'No data available.';
+          emptyRow.appendChild(emptyCell);
+          dataTableBody.appendChild(emptyRow);
+      }
+
+      const teacherReviews = {};
+      capturedData.forEach(data => {
+        const teacherName = data.teacherName;
+          if (teacherReviews[teacherName]) {
+            teacherReviews[teacherName]++;
+          } else {
+          teacherReviews[teacherName] = 1;
+        }
+      });
+
+      const teacherNames = Object.keys(teacherReviews);
+      const reviewCounts = Object.values(teacherReviews);
+      const backgroundColors = teacherNames.map(() => {
+            // Generate a random color
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            return `rgba(${r}, ${g}, ${b}, 0.6)`;
+        });
+
+      const ctx = document.getElementById('teacherPieChart').getContext('2d');
+      const pieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: teacherNames,
+        datasets: [{
+          data: reviewCounts,
+          backgroundColor: backgroundColors,
+        }],
+      },
+    });
+
+    // // Add an event listener to the "Clear Captured Data" button
+    //   const clearDataButton = document.getElementById('clearDataButton');
+    //   clearDataButton.addEventListener('click', function () {
+    //       localStorage.removeItem('capturedData');
+    //       // Optionally, you can also clear any displayed data in your table here
+    //      // Example: dataTableBody.innerHTML = '';
+    //     alert('Captured data has been cleared from localStorage.');
+    //   });
+    document.getElementById('exportToCSV').addEventListener('click', function () {
+  // Get the captured data from localStorage
+    const capturedDataJSON = localStorage.getItem('capturedData');
+    const capturedData = capturedDataJSON ? JSON.parse(capturedDataJSON) : [];
+
+    if (capturedData.length === 0) {
+      alert('No data available for export.');
+     return;
+    }
+
+  // Create a CSV content string
+    let csvContent = 'data:text/csv;charset=utf-8,';
+
+  // Add the header row
+    csvContent += "Teacher's Name,Teacher's Subject,Year Taught,Subject Type,Provided Extra Resources,Flexibility with Due Dates,Type of Paper Set,Other Information\n";
+
+  // Add each captured data entry as a row
+    capturedData.forEach(data => {
+      csvContent += `${data.teacherName},${data.teacherSubject},${data.yearTaught},${data.subjectType},${data.resourcesProvided},${data.dateFlexibility},${data.paperType},${data.otherInfo}\n`;
+    });
+
+  // Create a data URI and trigger a download
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'captured_data.csv');
+    document.body.appendChild(link);
+    link.click();
+  });
+  </script>
+  <script src = "displayJS.js"></script>
+</body>
+</html>

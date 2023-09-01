@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Know Your Teachers</title>
+      <script src="html2pdf.bundle.min.js"></script>
+      <link rel="stylesheet" href="style.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+   </head>
+   <body>
+      <div class="container">
+         <!-- <header>Review your teachers</header> -->
+         <div class="progress-bar">
+            <div class="step">
+               <p>
+                  Name
+               </p>
+               <div class="bullet">
+                  <span>1</span>
+               </div>
+               <div class="check fas fa-check"></div>
+            </div>
+            <div class="step">
+               <p>
+                  Background
+               </p>
+               <div class="bullet">
+                  <span>2</span>
+               </div>
+               <div class="check fas fa-check"></div>
+            </div>
+            <div class="step">
+               <p>
+                  Help
+               </p>
+               <div class="bullet">
+                  <span>3</span>
+               </div>
+               <div class="check fas fa-check"></div>
+            </div>
+            <div class="step">
+               <p>
+                  Exam
+               </p>
+               <div class="bullet">
+                  <span>4</span>
+               </div>
+               <div class="check fas fa-check"></div>
+            </div>
+         </div>
+         <div class="form-outer">
+            <form action="#">
+               <div class="page slide-page">
+                  <div class="title">
+                     Basic Information:
+                  </div>
+                  <div class="field">
+                     <div class="label">
+                        Teacher's Name
+                     </div>
+                     <input type="text" name="teacher-name">
+                  </div>
+                  <div class="field">
+                     <div class="label">
+                        Teacher's Subject
+                     </div>
+                     <input type="text" name="teacher-subject">
+                  </div>
+                  <div class="field">
+                     <button class="firstNext next">Next</button>
+                  </div>
+               </div>
+               <div class="page">
+                  <div class="title">
+                     Background Info:
+                  </div>
+                  <div class="field">
+                     <div class="label">
+                        Year Taught:
+                     </div>
+                     <select name="year">
+                        <option>First Year</option>
+                        <option>Second Year</option>
+                        <option>Third Year</option>
+                        <option>Fourth Year</option>
+                     </select>
+                  </div>
+                  <div class="field">
+                     <div class="label">
+                        Subject Type:
+                     </div>
+                     <select name="subject-type">
+                        <option>Credit</option>
+                        <option>P/NP</option>
+                        <option>MNC</option>
+                     </select>
+                  </div>
+                  <div class="field btns">
+                     <button class="prev-1 prev">Previous</button>
+                     <button class="next-1 next">Next</button>
+                  </div>
+               </div>
+               <div class="page">
+                  <div class="title">
+                     Help Provided:
+                  </div>
+                  <div class="field">
+                     <div class="label">
+                        Provided extra resources in advance?
+                     </div>
+                     <input type="text" name="resources">
+                  </div>
+                  <div class="field">
+                     <div class="label">
+                        Flexibility with due dates:
+                     </div>
+                     <input type="text" name="flexibility">
+                  </div>
+                  <div class="field btns">
+                     <button class="prev-2 prev">Previous</button>
+                     <button class="next-2 next">Next</button>
+                  </div>
+               </div>
+               <div class="page">
+                  <div class="title">
+                     Exams:
+                  </div>
+                  <div class="field">
+                     <div class="label">
+                        Type of paper set:(Theory/Practical/NA)
+                     </div>
+                     <input type="text" name="paper">
+                  </div>
+                  <div class="field">
+                     <div class="label">
+                        Other information you would like to add?
+                     </div>
+                     <input type="text" name="other">
+                  </div>
+                  <div class="field btns">
+                     <button class="prev-3 prev">Previous</button>
+                     <button class="submit">Submit</button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+      <script src="script.js"></script>
+   </body>
+</html>
